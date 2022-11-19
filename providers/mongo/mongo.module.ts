@@ -7,9 +7,11 @@ import { Module } from '@nestjs/common';
 
 import { PrismaService } from './prisma.service';
 
+import { UserService } from './user.service';
+
 @Module({
   imports: [],
-  providers: [PrismaService],
-  exports: [],
+  providers: [PrismaService, UserService],
+  exports: [UserService],
 })
 export class MongodbModule {}
