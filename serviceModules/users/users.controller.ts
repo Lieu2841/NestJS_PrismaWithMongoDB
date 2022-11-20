@@ -1,7 +1,9 @@
-import { Controller, ValidationPipe, Param, Body, Req, Res, Get, Post, Patch, Delete } from '@nestjs/common';
+import { Controller, UseGuards, ValidationPipe, Param, Body, Req, Res, Get, Post, Patch, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 import { newUserDTO, loginUserDTO } from './users.dto';
+
+import { LoginGuard } from '../../appModules/auth/auth.guard';
 
 @Controller('/user')
 export class UsersController {
@@ -54,9 +56,24 @@ export class UsersController {
   }
 
   @Patch()
-  async patchUser(@Res() res){
-    this.usersService.patchUser();
-    res.send('update_user_data');
+  @UseGuards(LoginGuard)
+  async patchUser(
+    @Req() req,
+    @Res() res
+  ){
+    // parsed in LoginGuard
+    let userId : string = req.userId;
+
+    let params = {
+      id: userId,
+      pass: undefined,
+      name: undefined
+    };
+    if(req.body.pass) params.pass = String(req.body.pass);
+    if(req.body.name) params.name = String(req.body.name);
+
+    let updateUserRes = await this.usersService.patchUser(params);
+    res.send(JSON.stringify(updateUserRes));
   }
 
   @Delete()

@@ -88,7 +88,27 @@ export class UsersService {
 
   }
 
-  async patchUser(){
+  async patchUser(params : {id : string, pass?: string | undefined, name?: string | undefined}) : Promise<{error: boolean}> {
+
+    let getUserUniqueInput : Prisma.UserWhereUniqueInput = {
+      id: params.id,
+    }
+
+    let UserUpdateInput : Prisma.UserUpdateInput = {}
+
+    if(params.pass) UserUpdateInput.pass = await this.cryptoService.passwordEncrypt(params.pass);
+    if(params.name) UserUpdateInput.name = params.name;
+
+    try{
+      await this.userMongoService.updateUser({
+        where: getUserUniqueInput,
+        data: UserUpdateInput
+      });
+    } catch(e){
+      return {error: true}
+    }
+    
+    return {error: false}
   }
 
   async deleteUser(){
