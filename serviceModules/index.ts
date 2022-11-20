@@ -4,9 +4,10 @@
 import { Module } from '@nestjs/common';
 
 import { UsersModule } from './users/users.module';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
-  imports: [UsersModule],
-  exports: [UsersModule],
+  imports: [UsersModule, PostsModule],
+  exports: [UsersModule, PostsModule],
 })
 export class ServiceModules {}
