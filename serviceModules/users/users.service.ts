@@ -62,7 +62,7 @@ export class UsersService {
       return {error: true}
     }
 
-    return {error: true, id: createdUser.id}
+    return {error: false, id: createdUser.id}
   }
 
   async patchUser(){
