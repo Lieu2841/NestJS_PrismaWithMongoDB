@@ -3,11 +3,14 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { UserService } from '../../providers/mongo/user.service'
 
+import { CryptoService } from '../../appModules/crypto/crypto.service'
+
 @Injectable()
 export class UsersService {
 
   constructor(
     private userService: UserService,
+    private cryptoService: CryptoService,
   ){}
 
   async getOneUser(_id : string) : Promise<object | boolean> {
