@@ -77,9 +77,17 @@ export class UsersController {
   }
 
   @Delete()
-  async deleteUser(@Res() res){
-    this.usersService.deleteUser();
-    res.send('delete_user_data');
+  @UseGuards(LoginGuard)
+  async deleteUser(
+    @Req() req,
+    @Res() res
+  ){
+    // parsed in LoginGuard
+    let userId : string = req.userId;
+
+    let isDeleteSuccess = await this.usersService.deleteUser(userId);
+    if(isDeleteSuccess) res.send(JSON.stringify({error: false}));
+    else res.send(JSON.stringify({error: true}));
   }
 
 }

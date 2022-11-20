@@ -113,7 +113,19 @@ export class UsersService {
     return {error: false}
   }
 
-  async deleteUser(){
+  async deleteUser(id: string) : Promise<boolean> {
+
+    let getUserUniqueInput : Prisma.UserWhereUniqueInput = {
+      id: id,
+    };
+
+    try{
+      await this.userMongoService.deleteUser(getUserUniqueInput);
+    } catch(e){
+      return true
+    }
+
+    return true
   }
 
 }
