@@ -4,6 +4,7 @@ import { Prisma, User } from '@prisma/client';
 import { UserMongoService } from '../../providers/mongo/user.service'
 
 import { CryptoService } from '../../appModules/crypto/crypto.service'
+import { AuthService } from '../../appModules/auth/auth.service'
 
 @Injectable()
 export class UsersService {
@@ -11,6 +12,7 @@ export class UsersService {
   constructor(
     private userMongoService: UserMongoService,
     private cryptoService: CryptoService,
+    private authService : AuthService,
   ){}
 
   async getOneUser(_id : string) : Promise<object | boolean> {
@@ -63,6 +65,27 @@ export class UsersService {
     }
 
     return {error: false, id: createdUser.id}
+  }
+
+  async loginUser(params : {email : string, pass: string}) : Promise<{error: boolean, loginToken?: string}>{
+
+    let getUserUniqueInput : Prisma.UserWhereUniqueInput = {
+      email: params.email
+    }
+
+    let getUser : User;
+    try{
+      getUser = await this.userMongoService.user(getUserUniqueInput);
+    } catch(e){
+      return {error: true}
+    }
+
+    let hassedPass = await this.cryptoService.passwordEncrypt(params.pass);
+    if(getUser.pass === hassedPass){
+      let newLoginToken : string = await this.authService.genLoginToken(getUser.id);
+      return {error: false, loginToken: newLoginToken}
+    } else return {error: true}
+
   }
 
   async patchUser(){

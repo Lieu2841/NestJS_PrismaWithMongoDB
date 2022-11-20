@@ -3,12 +3,13 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
 import { MongodbModule } from '../../providers/mongo/mongo.module';
-import { CryptoModule } from '../../appModules/crypto/crypto.module'
+
+import { AppModules } from '../../appModules/index'
 
 @Module({
   imports: [
-    CryptoModule, 
-    MongodbModule
+    MongodbModule,
+    AppModules
   ],
   controllers: [UsersController],
   providers: [UsersService],

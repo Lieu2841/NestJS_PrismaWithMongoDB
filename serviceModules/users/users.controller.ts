@@ -1,7 +1,7 @@
 import { Controller, ValidationPipe, Param, Body, Req, Res, Get, Post, Patch, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 
-import { newUserDTO } from './users.dto';
+import { newUserDTO, loginUserDTO } from './users.dto';
 
 @Controller('/user')
 export class UsersController {
@@ -33,6 +33,24 @@ export class UsersController {
 
     let addUserRes = await this.usersService.addUser(params);
     res.send(JSON.stringify(addUserRes));
+  }
+
+  @Post('/login')
+  async loginUser(
+    @Body(ValidationPipe) loginUserDTO: loginUserDTO,
+    @Res() res
+  ){
+    const { email, pass } = loginUserDTO;
+
+    let params = {
+      email : email,
+      pass: pass
+    }
+
+    // Need to use generated loginToken in frontside
+    // or in backside, use res.header
+    let loginUserRes = await this.usersService.loginUser(params);
+    res.send(JSON.stringify(loginUserRes));
   }
 
   @Patch()

@@ -10,3 +10,11 @@ export class newUserDTO {
   @IsString()
   name: string;
 }
+
+export class loginUserDTO {
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  pass: string;
+}
