@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { Prisma, User } from '@prisma/client';
-import { UserService } from '../../providers/mongo/user.service'
+import { UserMongoService } from '../../providers/mongo/user.service'
 
 import { CryptoService } from '../../appModules/crypto/crypto.service'
 
@@ -9,7 +9,7 @@ import { CryptoService } from '../../appModules/crypto/crypto.service'
 export class UsersService {
 
   constructor(
-    private userService: UserService,
+    private userMongoService: UserMongoService,
     private cryptoService: CryptoService,
   ){}
 
@@ -21,7 +21,7 @@ export class UsersService {
 
     let getUser : User;
     try{
-      getUser = await this.userService.user(getUserUniqueInput);
+      getUser = await this.userMongoService.user(getUserUniqueInput);
     } catch(e){
       return false
     }
@@ -57,7 +57,7 @@ export class UsersService {
     
     let createdUser : User
     try{
-      createdUser = await this.userService.createUser(createInput);
+      createdUser = await this.userMongoService.createUser(createInput);
     } catch(e){
       return {error: true}
     }
