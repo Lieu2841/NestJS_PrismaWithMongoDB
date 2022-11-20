@@ -5,4 +5,16 @@ export class UsersService {
 
   constructor(){}
 
+  async getUser(){
+  }
+
+  async addUser(){
+  }
+
+  async patchUser(){
+  }
+
+  async deleteUser(){
+  }
+
 }
