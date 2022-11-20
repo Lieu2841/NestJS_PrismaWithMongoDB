@@ -80,6 +80,8 @@ export class UsersService {
       return {error: true}
     }
 
+    if(getUser.isDeleted) return {error: true};
+
     let hassedPass = await this.cryptoService.passwordEncrypt(params.pass);
     if(getUser.pass === hassedPass){
       let newLoginToken : string = await this.authService.genLoginToken(getUser.id);
