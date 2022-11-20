@@ -43,3 +43,9 @@ model Comment {
   commenter    User   @relation(fields: [commenterId], references: [id])
   commenterId  String @db.ObjectId
 }
+
+model Counter {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  target  String @unique
+  no      Int
+}
