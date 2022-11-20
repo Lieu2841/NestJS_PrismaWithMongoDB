@@ -45,7 +45,24 @@ export class UsersService {
     return returnUserData
   }
 
-  async addUser(){
+  async addUser(params : {email : string, pass: string, name: string}) : Promise<{error: boolean, id?: string}>{
+
+    let hassedPass = await this.cryptoService.passwordEncrypt(params.pass);
+
+    let createInput : Prisma.UserCreateInput = {
+      email: params.email,
+      pass: hassedPass,
+      name: params.name
+    };
+    
+    let createdUser : User
+    try{
+      createdUser = await this.userService.createUser(createInput);
+    } catch(e){
+      return {error: true}
+    }
+
+    return {error: true, id: createdUser.id}
   }
 
   async patchUser(){

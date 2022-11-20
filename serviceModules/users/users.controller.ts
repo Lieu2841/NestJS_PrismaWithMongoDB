@@ -1,6 +1,7 @@
 import { Controller, ValidationPipe, Param, Body, Req, Res, Get, Post, Patch, Delete } from '@nestjs/common';
-import { constants } from 'buffer';
 import { UsersService } from './users.service';
+
+import { newUserDTO } from './users.dto';
 
 @Controller('/user')
 export class UsersController {
@@ -18,9 +19,20 @@ export class UsersController {
   }
 
   @Post()
-  async addUser(@Res() res){
-    this.usersService.addUser();
-    res.send('add_user_data');
+  async addUser(
+    @Body(ValidationPipe) newUserDTO: newUserDTO,
+    @Res() res
+  ){
+    const { email, pass, name } = newUserDTO;
+
+    let params = {
+      email : email,
+      pass: pass,
+      name: name
+    }
+
+    let addUserRes = await this.usersService.addUser(params);
+    res.send(JSON.stringify(addUserRes));
   }
 
   @Patch()
