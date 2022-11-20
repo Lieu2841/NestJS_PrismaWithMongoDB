@@ -1,14 +1,20 @@
-import { Controller, Req, Res, Get, Post, Patch, Delete } from '@nestjs/common';
+import { Controller, ValidationPipe, Param, Body, Req, Res, Get, Post, Patch, Delete } from '@nestjs/common';
+import { constants } from 'buffer';
 import { UsersService } from './users.service';
 
 @Controller('/user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  async getUser(@Res() res){
-    this.usersService.getUser();
-    res.send('get_user_data');
+  @Get(':id')
+  async getOneUser(
+    @Param() params,
+    @Res() res
+  ){
+    const _id = params.id;
+    let userData = await this.usersService.getOneUser(_id);
+    if(!userData) res.send('There is no user');
+    else res.send(JSON.stringify(userData));
   }
 
   @Post()
