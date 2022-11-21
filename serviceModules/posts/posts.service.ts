@@ -5,6 +5,7 @@ import { PostMongoService } from '../../providers/mongo/post.service'
 
 import { CryptoService } from '../../appModules/crypto/crypto.service'
 import { AuthService } from '../../appModules/auth/auth.service'
+import { retry } from 'rxjs';
 
 @Injectable()
 export class PostsService {
@@ -41,5 +42,22 @@ export class PostsService {
 
     return {error : false, post: createdPost}
   }
+
+  async getOnePost(postId : string) : Promise<{error: boolean, post?: Post}> {
+    let getPostParams : Prisma.PostWhereUniqueInput = {
+      id: postId
+    }
+
+    let data : Post;
+    try{
+      data = await this.postMongoService.getPost(getPostParams);
+    } catch(e){
+      return {error: true}
+    }
+    
+    return {error: false, post: data}
+  }
+
+
 
 }

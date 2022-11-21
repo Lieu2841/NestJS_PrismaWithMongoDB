@@ -9,6 +9,16 @@ import { LoginGuard } from '../../appModules/auth/auth.guard';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @Get(':id')
+  async getOnePost(
+    @Param() params,
+    @Res() res
+  ){
+    const _id = params.id;
+    let userData = await this.postsService.getOnePost(_id);
+    res.send(JSON.stringify(userData));
+  }
+  
   @Post()
   @UseGuards(LoginGuard)
   async createPost(
