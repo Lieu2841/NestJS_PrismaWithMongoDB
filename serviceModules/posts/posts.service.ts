@@ -54,6 +54,8 @@ export class PostsService {
     } catch(e){
       return {error: true}
     }
+
+    if(data.isDeleted) return {error: true};
     
     return {error: false, post: data}
   }
