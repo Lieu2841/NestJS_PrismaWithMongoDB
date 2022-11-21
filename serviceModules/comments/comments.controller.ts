@@ -21,7 +21,7 @@ export class CommentsController {
 
   @Post()
   @UseGuards(LoginGuard)
-  async createPost(
+  async createComment(
     @Body(ValidationPipe) createCommentDTO: CreateCommentDTO,
     @Req() req,
     @Res() res
