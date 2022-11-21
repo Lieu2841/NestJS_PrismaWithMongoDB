@@ -14,6 +14,24 @@ export class CommentMongoService {
     });
   }
 
+  async getWholeComments(postId : string): Promise<Comment[]> {
+
+    let postWhereInput : Prisma.PostWhereInput = {
+      id: postId
+    }
+    let postRelationFilter : Prisma.PostRelationFilter = {
+      is: postWhereInput
+    }
+
+    let whereParams : Prisma.CommentWhereInput = {
+      post : postRelationFilter
+    }
+
+    return this.prisma.comment.findMany({
+      where : whereParams,
+    });
+  }
+
   async createComment(data: Prisma.CommentCreateInput): Promise<Comment> {
     return this.prisma.comment.create({
       data,

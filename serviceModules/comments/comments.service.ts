@@ -12,6 +12,21 @@ export class CommentsService {
     private commentMongoService: CommentMongoService,
   ){}
 
+
+  async getWholeComment(postId: string) : Promise<{error: boolean, comments?: Comment[]}>{
+    
+    let WholePostId : Comment[]
+    
+    try{
+      WholePostId = await this.commentMongoService.getWholeComments(postId);
+    } catch(e){
+      return {error: true}
+    }
+    
+    return {error: false, comments: WholePostId}
+  }
+
+
   async createComment(params: {postId: string, userId: string, comment : string}) : Promise<{error: boolean, comment?: Comment}>{
 
     let userWhereUniqueInput : Prisma.UserWhereUniqueInput = {

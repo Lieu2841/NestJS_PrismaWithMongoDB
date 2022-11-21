@@ -9,6 +9,16 @@ import { LoginGuard } from '../../appModules/auth/auth.guard';
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
+  @Get(':id')
+  async getWholeComment(
+    @Param() params,
+    @Res() res
+  ){
+    const postId = params.id;
+    let wholeCommentData = await this.commentsService.getWholeComment(postId);
+    res.send(JSON.stringify(wholeCommentData));
+  }
+
   @Post()
   @UseGuards(LoginGuard)
   async createPost(
