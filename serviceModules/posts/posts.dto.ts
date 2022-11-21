@@ -7,3 +7,8 @@ export class createPostDTO {
   @IsString()
   body: string;
 }
+
+export class UpdatePostDTO {
+  @IsString()
+  postId: string;
+}

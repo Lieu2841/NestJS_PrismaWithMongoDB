@@ -1,7 +1,7 @@
 import { Controller, UseGuards, ValidationPipe, Param, Body, Req, Res, Get, Post, Patch, Delete } from '@nestjs/common';
 import { PostsService } from './posts.service';
 
-import { createPostDTO } from './posts.dto';
+import { createPostDTO, UpdatePostDTO } from './posts.dto';
 
 import { LoginGuard } from '../../appModules/auth/auth.guard';
 
@@ -38,6 +38,31 @@ export class PostsController {
 
     let newPostRes = await this.postsService.createPost(params);
     res.send(JSON.stringify(newPostRes));
+  }
+
+  @Patch()
+  @UseGuards(LoginGuard)
+  async patchPost(
+    @Body(ValidationPipe) updatePostDTO: UpdatePostDTO,
+    @Req() req,
+    @Res() res
+  ){
+    // parsed in LoginGuard
+    const userId : string = req.userId;
+
+    const { postId } = updatePostDTO;
+
+    let params = {
+      userId: userId,
+      postId: postId,
+      title: undefined,
+      body: undefined
+    };
+    if(req.body.title) params.title = String(req.body.title);
+    if(req.body.body) params.body = String(req.body.body);
+
+    let updatePostRes = await this.postsService.patchPost(params);
+    res.send(JSON.stringify(updatePostRes));
   }
 
 

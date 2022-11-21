@@ -62,7 +62,16 @@ export class PostMongoService {
     postCounterId = counter.id;
   }
 
-
+  async updatePost(params: {
+    where: Prisma.PostWhereUniqueInput;
+    data: Prisma.PostUpdateInput;
+  }): Promise<Post> {
+    const { where, data } = params;
+    return this.prisma.post.update({
+      data,
+      where,
+    });
+  }
 
 
 

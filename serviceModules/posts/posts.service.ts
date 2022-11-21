@@ -58,6 +58,34 @@ export class PostsService {
     return {error: false, post: data}
   }
 
+  async patchPost(params : {userId : string, postId : string, title?: string | undefined, body?: string | undefined}) : Promise<{error: boolean, post?: Post}> {
 
+    let getPostUniqueInput : Prisma.PostWhereUniqueInput = {
+      id: params.postId,
+    }
+
+    let selectedPost : Post;
+    try{
+      selectedPost = await this.postMongoService.getPost(getPostUniqueInput);
+    } catch(e){
+      return {error: true}
+    }
+    if(selectedPost.authorId !== params.userId) return {error: true}
+
+    let PostUpdateInput : Prisma.PostUpdateInput = {}
+    if(params.title) PostUpdateInput.title = params.title;
+    if(params.body) PostUpdateInput.body = params.body;
+
+    try{
+      selectedPost = await this.postMongoService.updatePost({
+        where: getPostUniqueInput,
+        data: PostUpdateInput
+      });
+    } catch(e){
+      return {error: true}
+    }
+    
+    return {error: false, post: selectedPost}
+  }
 
 }
