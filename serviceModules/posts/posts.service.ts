@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { Post, Prisma, User } from '@prisma/client';
+import { Post, Prisma } from '@prisma/client';
 import { PostMongoService } from '../../providers/mongo/post.service'
-
-import { CryptoService } from '../../appModules/crypto/crypto.service'
-import { AuthService } from '../../appModules/auth/auth.service'
-import { retry } from 'rxjs';
 
 @Injectable()
 export class PostsService {
