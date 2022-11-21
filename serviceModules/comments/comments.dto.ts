@@ -7,3 +7,11 @@ export class CreateCommentDTO {
   @IsString()
   postId: string;
 }
+
+export class UpdateCommentDTO {
+  @IsString()
+  commentId: string;
+
+  @IsString()
+  comment: string;
+}
