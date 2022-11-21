@@ -1,7 +1,7 @@
 import { Controller, UseGuards, ValidationPipe, Param, Body, Req, Res, Get, Post, Patch, Delete } from '@nestjs/common';
 import { PostsService } from './posts.service';
 
-import { createPostDTO, UpdatePostDTO } from './posts.dto';
+import { createPostDTO, PostIdDTO } from './posts.dto';
 
 import { LoginGuard } from '../../appModules/auth/auth.guard';
 
@@ -43,14 +43,14 @@ export class PostsController {
   @Patch()
   @UseGuards(LoginGuard)
   async patchPost(
-    @Body(ValidationPipe) updatePostDTO: UpdatePostDTO,
+    @Body(ValidationPipe) postIdDTO: PostIdDTO,
     @Req() req,
     @Res() res
   ){
     // parsed in LoginGuard
     const userId : string = req.userId;
 
-    const { postId } = updatePostDTO;
+    const { postId } = postIdDTO;
 
     let params = {
       userId: userId,
@@ -65,6 +65,25 @@ export class PostsController {
     res.send(JSON.stringify(updatePostRes));
   }
 
+  @Delete()
+  @UseGuards(LoginGuard)
+  async deletePost(
+    @Body(ValidationPipe) postIdDTO: PostIdDTO,
+    @Req() req,
+    @Res() res
+  ){
+    // parsed in LoginGuard
+    const userId : string = req.userId;
 
+    const { postId } = postIdDTO;
+
+    let params = {
+      userId: userId,
+      postId: postId,
+    };
+
+    let deletePostRes = await this.postsService.deletePost(params);
+    res.send(JSON.stringify(deletePostRes));
+  }
 
 }

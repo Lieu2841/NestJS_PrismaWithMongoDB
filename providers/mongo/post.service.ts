@@ -73,7 +73,14 @@ export class PostMongoService {
     });
   }
 
-
+  // Soft delete
+  async deletePost(where: Prisma.PostWhereUniqueInput): Promise<Post> {
+    let data: Prisma.PostUpdateInput = {isDeleted: true}
+    return this.prisma.post.update({
+      data,
+      where,
+    });
+  }
 
 
 

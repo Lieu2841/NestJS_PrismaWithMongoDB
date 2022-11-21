@@ -88,4 +88,27 @@ export class PostsService {
     return {error: false, post: selectedPost}
   }
 
+  async deletePost(params : {userId : string, postId : string}) : Promise<{error: boolean}> {
+
+    let getPostUniqueInput : Prisma.PostWhereUniqueInput = {
+      id: params.postId,
+    }
+
+    let selectedPost : Post;
+    try{
+      selectedPost = await this.postMongoService.getPost(getPostUniqueInput);
+    } catch(e){
+      return {error: true}
+    }
+    if(selectedPost.authorId !== params.userId) return {error: true}
+
+    try{
+      await this.postMongoService.deletePost(getPostUniqueInput);
+    } catch(e){
+      return {error: true}
+    }
+    
+    return {error: false}
+  }
+
 }
