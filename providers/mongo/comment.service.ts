@@ -24,7 +24,8 @@ export class CommentMongoService {
     }
 
     let whereParams : Prisma.CommentWhereInput = {
-      post : postRelationFilter
+      post : postRelationFilter,
+      isDeleted: false
     }
 
     return this.prisma.comment.findMany({
