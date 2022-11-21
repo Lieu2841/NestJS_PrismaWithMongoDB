@@ -23,8 +23,10 @@ export class PostsService {
       connect : userWhereUniqueInput
     }
 
+    let postNumber = await this.postMongoService.getPostNumber_IncreaseNumber();
+
     let newPost : Prisma.PostCreateInput = {
-      no : 1,
+      no : postNumber,
       title: params.title,
       body: params.body,
       author: userCreateNestedOneWithoutPostsInput
