@@ -9,10 +9,11 @@ import { PrismaService } from './prisma.service';
 
 import { UserMongoService } from './user.service';
 import { PostMongoService } from './post.service';
+import { CommentMongoService } from './comment.service';
 
 @Module({
   imports: [],
-  providers: [PrismaService, UserMongoService, PostMongoService],
-  exports: [UserMongoService, PostMongoService],
+  providers: [PrismaService, UserMongoService, PostMongoService, CommentMongoService],
+  exports: [UserMongoService, PostMongoService, CommentMongoService],
 })
 export class MongodbModule {}
