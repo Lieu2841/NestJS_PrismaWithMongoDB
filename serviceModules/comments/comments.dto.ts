@@ -15,3 +15,8 @@ export class UpdateCommentDTO {
   @IsString()
   comment: string;
 }
+
+export class DeleteCommentDTO {
+  @IsString()
+  commentId: string;
+}

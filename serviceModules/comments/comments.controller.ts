@@ -1,7 +1,7 @@
 import { Controller, UseGuards, ValidationPipe, Param, Body, Req, Res, Get, Post, Patch, Delete } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 
-import { CreateCommentDTO, UpdateCommentDTO } from './comments.dto';
+import { CreateCommentDTO, UpdateCommentDTO, DeleteCommentDTO } from './comments.dto';
 
 import { LoginGuard } from '../../appModules/auth/auth.guard';
 
@@ -62,7 +62,26 @@ export class CommentsController {
     res.send(JSON.stringify(updateCommentRes));
   }
 
+  @Delete()
+  @UseGuards(LoginGuard)
+  async deleteComment(
+    @Body(ValidationPipe) deleteCommentDTO: DeleteCommentDTO,
+    @Req() req,
+    @Res() res
+  ){
+    // parsed in LoginGuard
+    const userId : string = req.userId;
 
+    const { commentId } = deleteCommentDTO;
+
+    let params = {
+      userId: userId,
+      commentId: commentId,
+    };
+
+    let deleteCommentRes = await this.commentsService.deleteComment(params);
+    res.send(JSON.stringify(deleteCommentRes));
+  }
 
 
 

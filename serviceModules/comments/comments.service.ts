@@ -85,6 +85,35 @@ export class CommentsService {
     return {error: false, comment: selectedComment}
   }
 
+  async deleteComment(params : {userId : string, commentId: string}) : Promise<{error: boolean}> {
+    
+    let getCommentUniqueInput : Prisma.CommentWhereUniqueInput = {
+      id: params.commentId,
+    }
+
+    let selectedComment : Comment;
+    try{
+      selectedComment = await this.commentMongoService.getComment(getCommentUniqueInput);
+    } catch(e){
+      return {error: true}
+    }
+
+    if(selectedComment.commenterId !== params.userId) return {error: true}
+    
+    let CommentDeleteInput : Prisma.CommentUpdateInput = {
+      isDeleted : true
+    }
+    try{
+      selectedComment = await this.commentMongoService.updateComment({
+        where: getCommentUniqueInput,
+        data: CommentDeleteInput
+      });
+    } catch(e){
+      return {error: true}
+    }
+    
+    return {error: false}
+  }
 
 
 
@@ -92,8 +121,7 @@ export class CommentsService {
 
 
 
-
-
+  
 
 
 
