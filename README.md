@@ -1,3 +1,6 @@
+Notion doc link 
+https://handy-sorrel-bd2.notion.site/NestJS_PrismaWithMongoDB-14046b61ec7445d0a0f3c90620d6440e
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
